@@ -4,10 +4,15 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
+ * @ApiResource(
+ * normalizationContext={"groups"={"get"}},
+ * denormalizationContext={"groups"={"post"}})
  */
 class Customer
 {
@@ -20,26 +25,31 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"rget", "post"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get", "post"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get", "post"})
      */
     private $company;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="customer")
+     * @Groups({"read", "write"})
      */
     private $invoices;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get", "post"})
      */
     private $email;
 

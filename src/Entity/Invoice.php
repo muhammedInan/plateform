@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
+ * @ApiResource()
  */
 class Invoice
 {
@@ -18,22 +21,26 @@ class Invoice
 
     /**
      * @ORM\Column(type="float")
+     * 
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CUstomer", inversedBy="invoices")
      * @ORM\JoinColumn(nullable=false)
+     * 
      */
     private $customer;
 
