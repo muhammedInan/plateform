@@ -2,17 +2,20 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
- * @ApiResource(
- * normalizationContext={"groups"={"get"}},
- * denormalizationContext={"groups"={"post"}})
+ * @ApiResource
+ * @ApiFilter(SearchFilter::class)
+ * @ApiFilter(OrderFilter::class)
  */
 class Customer
 {
