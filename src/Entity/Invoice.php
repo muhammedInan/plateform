@@ -11,6 +11,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
  * @ApiResource(
+ *  subresourceOperations={
+ *      "api_customers_invoices_get_subresource"={
+ *          "normalization_context"={"groups"={"invoices_subresource"}}
+ *          }
+ *  },
+ * itemOperations={"GET", "PUT", "DELETE", "increment"={
+ * "method"="post",
+ *  "path"="/invoices/{id}/increment",
+ *  "controller"="App\Controller\InvoiceIncrementationController",
+ * "swagger_context"={
+ *      "summary"=Incremente une facture",
+ *      "description="Incremente le chrono d'une facture donnée"
+ * }
+ *  }
+ *      },
  * attributes={
  *      "pagination_enabled_enabled"=true,
  *      "pagination_items_per_page"=20,
@@ -26,25 +41,25 @@ class Invoice
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"invoices_read", "customers-read"})
+     * @Groups({"invoices_read", "customers-read", "invoices_subresources"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"invoices_read", "customers-read"})
+     * @Groups({"invoices_read", "customers-read", "invoices_subresources"})
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"invoices_read", "customers-read"})
+     * @Groups({"invoices_read", "customers-read", "invoices_subresources"})
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"invoices_read", "customers-read"})
+     * @Groups({"invoices_read", "customers-read", "invoices_subresources"})
      */
     private $status;
 
@@ -57,9 +72,14 @@ class Invoice
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"invoices_read", "customers-read"})
+     * @Groups({"invoices_read", "customers-read", "invoices_subresources"})
      */
     private $chrono;
+
+    public function getUser(): User
+    {
+        return $this->customer->getUser();
+    }
 
     public function getId(): ?int
     {
