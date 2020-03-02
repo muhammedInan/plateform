@@ -12,6 +12,7 @@ class InvoiceIncrementationController {
      * @var ObjectManager
      */
     private $manager;
+    
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
