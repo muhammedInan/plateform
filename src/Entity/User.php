@@ -15,8 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
- * @UniqueEntity(""email", message="Un utilisateur ayant cette adresseemail existe deja")
+ *  normalizationContext={"groups"={"users_read"}}
  * )
+ * @UniqueEntity("email", message="Un utilisateur ayant cette adresseemail existe deja")
  */
 class User implements UserInterface
 {
@@ -24,14 +25,14 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource", "users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
-     * @Assert\NotBlank(messsage="L'email doit etre renseigné ")
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource","users_read"})
+     * @Assert\NotBlank(message="L'email doit etre renseigné ")
      * @Assert\Email(message="L'adresse email doit avoir un format valide")
      */
     private $email;
@@ -59,8 +60,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
-     * @Groups({"customers_read", "invoices_read", "invoices_subresource"})
+     * @Groups({"customers_read", "invoices_read", "invoices_subresource","users_read"})
      * @Assert\NotBlank(message="Le nom de famille est obligatoire")
      * @Assert\Length(min=3, minMessage="Le nom de famille doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom de famille doit faire entre 3 et 255 caractères")
      */

@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\InvoiceIncrementationController;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
  * @ApiResource(
@@ -18,21 +19,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *  },
  * itemOperations={"GET", "PUT", "DELETE", "increment"={
- * "method"="post",
+ *  "method"="post",
  *  "path"="/invoices/{id}/increment",
  *  "controller"="App\Controller\InvoiceIncrementationController",
  * "swagger_context"={
- *      "summary"=Incremente une facture",
- *      "description="Incremente le chrono d'une facture donnée"
+ *      "summary"="Incremente une facture",
+ *      "description"="Incremente le chrono d'une facture donnée"
  * }
  *  }
  *      },
  * attributes={
- *      "pagination_enabled_enabled"=true,
+ *      "pagination_enabled"=true,
  *      "pagination_items_per_page"=20,
  *      "order": {"sentAt":"desc"}
  *  },
- * normalizationContext={"groups"={"invoices_read"}}
+ * normalizationContext={"groups"={"invoices_read"}},
  * denormalizationContext={"disable_type_enforcement"=true}
  * )
  * @ApiFilter(OrderFilter::class, properties={"amount","sentAt"})
@@ -72,7 +73,7 @@ class Invoice
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CUstomer", inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="invoices")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"invoices_read"})
      * @Assert\NotBlank(message="Le client de la facture doit etre renseigné")

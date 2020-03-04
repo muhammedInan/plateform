@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\User;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
  *  },
  *  normalizationContext={
- *      "groups" ={"customers_read"}
+ *      "groups"={"customers_read"}
  *  }
  * )
  * @ApiFilter(SearchFilter::class)
@@ -41,7 +42,6 @@ class Customer
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"rget", "post"})
      * @Groups({"customers_read", "invoices_read"})
      * @Assert\NotBlank(message="Le prénom du customer est obligatoire")
      * @Assert\Length(min=3, minMessage="Le prénom doit faire entre 3 et 255 caractères", max=255, 
@@ -66,7 +66,6 @@ class Customer
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice", mappedBy="customer")
-     * @Groups({"read", "write"})
      * @Groups({"customers_read"})
      * @ApiSubresource()
      */
@@ -105,7 +104,7 @@ class Customer
 
     /**
      * Recuperer le montant total non payé (montant total hors factures payées ou annulées)
-     * @Groups({"customers_read})
+     * @Groups({"customers_read"})
      * @return float
      */
     public function getUnpaidAmount(): float {
