@@ -32,4 +32,6 @@ class InvoiceIncrementationController {
         return $data;
 
     }
+
+    
 }

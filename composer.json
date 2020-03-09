@@ -19,6 +19,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/http-client": "*",
+        "symfony/http-kernel": "5.0.*",
         "symfony/intl": "*",
         "symfony/mailer": "*",
         "symfony/maker-bundle": "^1.14",
