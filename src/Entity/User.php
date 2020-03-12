@@ -15,6 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
+ *  collectionOperations={"post"},
+ *   itemOperations={"get"},
  *  normalizationContext={"groups"={"users_read"}}
  * )
  * @UniqueEntity("email", message="Un utilisateur ayant cette adresseemail existe deja")
@@ -208,4 +210,10 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function __toString(){
+        return (string) $this->getId();
+    }
+
+
 }

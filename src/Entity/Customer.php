@@ -18,17 +18,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  * @ApiResource(
- *  collectionOperations={"GET", "POST"},
- *  itemOperations={"GET", "PUT", "DELETE"},
- * subresourceOperations={
- *     "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
- *  },
  *  normalizationContext={
  *      "groups"={"customers_read"}
  *  }
  * )
- * @ApiFilter(SearchFilter::class)
- * @ApiFilter(OrderFilter::class)
+ * @ApiFilter(
+ * SearchFilter::class,
+ * properties={"firstName": "start", "lastName":"start", "company":"partial"}
+ * )
+ * @ApiFilter(OrderFilter::class,
+ * )
  */
 class Customer
 {
@@ -113,13 +112,18 @@ class Customer
         }, 0);
     }
 
-    /**
-     * Permet de recuperer le User a qui appartient finalement la facture
-     * @Groups({"invoices_read"})
-     * @return User
-     */
-    public function getUser(): User {
-        return $this->customer->getUser();
+    
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -206,11 +210,10 @@ class Customer
         return $this;
     }
 
-    
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
+    public function __toString(){
+        return (string) $this->getId();
     }
+
+    
+    
 }

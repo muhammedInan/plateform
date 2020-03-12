@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 class PasswordEncoderSubscriber implements EventSubscriberInterface {
 
@@ -26,7 +26,7 @@ class PasswordEncoderSubscriber implements EventSubscriberInterface {
         ];
     }
 
-    public function encodePassword(GetResponseForControllerResultEvent $event)// a chaque requete en post cette fonction va etre appeller pour deserialiser
+    public function encodePassword(ViewEvent $event)// a chaque requete en post cette fonction va etre appeller pour deserialiser
      {
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod(); // POST , GET , PUT , ...

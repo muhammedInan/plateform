@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\KernelEvents;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 class CustomerUserSubscriber implements EventSubscriberInterface
 {
@@ -25,13 +25,13 @@ class CustomerUserSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function setUserForCustomer(GetResponseForControllerResultEvent $event){
+    public function setUserForCustomer(ViewEvent $event){
         $customer = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
         
 
-        if($customer instanceOf Customer && $method === "POST") {
+        if ($customer instanceOf Customer && $method === "POST") {
             //Choper l'utilisateur actuellement connecte
             $user = $this->security->getUser();
             //Assigner l'utilisateur au customer qu'on est entrain de créer
